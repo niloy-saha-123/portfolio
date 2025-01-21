@@ -3,19 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --deep-space: #0A192F;  /* Deep background */
+  --star-light: #64FFDA;  /* Accent color */
+  --moon-glow: #8892B0;   /* Secondary text */
+  --cosmic-white: #E6F1FF; /* Primary text */
+  --nebula-blue: #112240; /* Card background */
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--deep-space);
+  color: var(--cosmic-white);
 }
