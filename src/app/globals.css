@@ -3,14 +3,19 @@
 @tailwind utilities;
 
 :root {
-  --deep-space: #0A192F;  /* Deep background */
-  --star-light: #64FFDA;  /* Accent color */
-  --moon-glow: #8892B0;   /* Secondary text */
-  --cosmic-white: #E6F1FF; /* Primary text */
-  --nebula-blue: #112240; /* Card background */
+  --background: 255 255 255;
+  --foreground: 15 23 42;
+}
+
+:root[class~="dark"] {
+  --background: 11 17 33;
+  --foreground: 248 250 252;
 }
 
 body {
-  background-color: var(--deep-space);
-  color: var(--cosmic-white);
+  @apply bg-[rgb(var(--background))] text-[rgb(var(--foreground))];
+}
+
+html {
+  scroll-behavior: smooth;
 }

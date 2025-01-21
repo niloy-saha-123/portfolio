@@ -1,3 +1,5 @@
+import Header from '@/components/layout/Header'
+import { ThemeProvider } from '@/context/ThemeContext'
 import './globals.css'
 import type { Metadata } from 'next'
 
@@ -12,8 +14,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" className="scroll-smooth">
+      <body>
+        <ThemeProvider>
+          <Header />
+          <main className="pt-16">
+            {children}
+          </main>
+        </ThemeProvider>
+      </body>
     </html>
   )
 }
