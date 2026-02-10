@@ -20,6 +20,10 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
 
+        {/* Preload cursors for faster/reliable loading */}
+        <link rel="preload" href="/cursor-light.svg" as="image" />
+        <link rel="preload" href="/cursor-dark.svg" as="image" />
+
         {/* Meta */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#FF2D7C" />

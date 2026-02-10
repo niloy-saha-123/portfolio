@@ -159,7 +159,8 @@ const HeroSection: React.FC = () => {
 
           {/* Resume Button */}
           <a
-            href="/resume.pdf"
+            href="/Resume.pdf"
+            download="Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 mt-8 px-8 py-4 font-bangers text-xl text-white transition-all duration-200 hover:-translate-x-[3px] hover:-translate-y-[3px]"
@@ -235,8 +236,8 @@ const HeroSection: React.FC = () => {
           <div
             className="relative"
             style={{
-              width: 'clamp(220px, 30vw, 420px)',
-              height: 'clamp(220px, 30vw, 420px)',
+              width: 'clamp(280px, 40vw, 550px)',
+              height: 'clamp(280px, 40vw, 550px)',
               filter: 'drop-shadow(6px 8px 12px rgba(0,0,0,0.3))',
             }}
           >
