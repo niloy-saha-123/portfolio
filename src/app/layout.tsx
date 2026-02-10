@@ -2,6 +2,7 @@
 
 import { ThemeProvider } from '@/context/ThemeContext';
 import Header from '@/components/layout/Header';
+import ClientCursor from '@/components/layout/ClientCursor';
 import './globals.css';
 
 export default function RootLayout({
@@ -35,6 +36,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased overflow-x-hidden transition-colors duration-300">
         <ThemeProvider>
+          <ClientCursor />
           <Header />
           <main className="pt-[80px] sm:pt-[100px] max-w-[1200px] mx-auto px-4 sm:px-8">
             {children}
