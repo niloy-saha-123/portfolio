@@ -1,117 +1,186 @@
 'use client';
 
-import { Building2, Briefcase, Code } from 'lucide-react';
+import React, { useState } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 
-const experiences = [
+interface Experience {
+  title: string;
+  company: string;
+  location: string;
+  period: string;
+  description: string[];
+  color: string;
+  burst: string;
+}
+
+const experiences: Experience[] = [
   {
     title: "Software Engineer Intern",
     company: "FarmData2",
-    location: "Carlisle, Pennsylvania, United States",
+    location: "Carlisle, PA",
     period: "May 2025 – Jul. 2025",
     description: [
-      "Developed and refactored a suite of 10+ core UI components using Vue.js and BootstrapVueNext, resolving critical bugs that improved front-end stability and streamlined user workflows.",
-      "Engineered a multi-pass logging system that automates the generation of 3+ new farm logs for each user submission, directly enhancing data fidelity for farm staff and USDA certification requirements.",
-      "Authored and maintained 15+ Cypress test files, covering both end-to-end and component testing, to guarantee a robust quality assurance pipeline and 75%+ test coverage.",
-      "Streamlined developer workflows and enhanced code quality by implementing Git pre-commit hooks that enforced linting rules, preventing the introduction of debug-only code and fostering a more collaborative environment."
-    ]
+      "Developed and refactored 10+ core UI components using Vue.js and BootstrapVueNext",
+      "Engineered multi-pass logging system automating 3+ new farm logs per submission",
+      "Authored 15+ Cypress test files achieving 75%+ test coverage",
+      "Implemented Git pre-commit hooks enforcing linting rules"
+    ],
+    color: '#FF2D7C',
+    burst: 'POW!'
   },
   {
     title: "Software Development Intern",
-    company: "Development Initiative for Social Awareness (DISA)", 
+    company: "DISA (Development Initiative for Social Awareness)",
     location: "Dhaka, Bangladesh",
     period: "Jul. 2024 – Aug. 2024",
     description: [
-      "Built a microfinance management system with Bootstrap and JavaScript, integrating secure authentication and real-time data processing for 500+ users.",
-      "Optimized MySQL queries, improving system efficiency by 40% and cutting data retrieval time by 25%, enhancing the Aloghar digital library's performance."
-    ]
+      "Built microfinance management system with Bootstrap and JavaScript for 500+ users",
+      "Optimized MySQL queries improving efficiency by 40% and cutting retrieval time by 25%"
+    ],
+    color: '#00D4FF',
+    burst: 'ZAP!'
   },
   {
     title: "Student Researcher",
     company: "84 Lumber",
     location: "Carlisle, PA",
-    period: "Nov. 2023 – Mar. 2024", 
+    period: "Nov. 2023 – Mar. 2024",
     description: [
-      "Engineered an ML-driven pipeline modernizing a 10,000+ line legacy C Basic codebase, enhancing processing efficiency and system maintainability.",
-      "Translated 30% of a legacy C Basic codebase into Java and Python, improving code readability and system maintenance efficiency, boosting developer productivity."
-    ]
+      "Engineered ML-driven pipeline modernizing 10,000+ line legacy C Basic codebase",
+      "Translated 30% of legacy codebase into Java and Python, improving maintainability"
+    ],
+    color: '#9B5DE5',
+    burst: 'BAM!'
   }
 ];
 
-const ExperienceSection = () => {
+const rotations = ['1.5deg', '-1deg', '0.8deg'];
+
+const ExperienceSection: React.FC = () => {
   const { theme } = useTheme();
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <section
-      id="experience"
-      className="py-28 px-6 lg:px-12 bg-[var(--about-bg)] transition-colors overflow-hidden"
-    >
-      <div className="max-w-7xl mx-auto">
-        <div className="flex justify-center">
-          <h2 className="text-6xl font-bold mb-[6rem]">
-            <span className="dark:text-purple-400 text-black transition-colors duration-300">
-              Work Experience
-            </span>
-          </h2>
-        </div>
+    <section id="experience" className="py-16">
+      <h2
+        className="font-bangers text-5xl mb-8 relative inline-block"
+        style={{ color: theme === 'dark' ? '#FFF8E7' : '#0D0D0D' }}
+      >
+        Work Experience
+        <span
+          className="absolute bottom-0 left-0 w-full h-2.5 -z-10"
+          style={{
+            background: '#9B5DE5',
+            transform: 'skewX(-10deg)'
+          }}
+        />
+      </h2>
 
-        <div className="relative">
-          <div className="absolute left-1/2 top-4 bottom-4 h-[calc(100%-4rem)] w-0.5 bg-gradient-to-b from-blue-500 to-purple-500 transform -translate-x-1/2" />
-          
-          {experiences.map((exp, index) => (
+      <div className="space-y-6">
+        {experiences.map((exp, index) => (
+          <div
+            key={index}
+            className="p-4 sm:p-8 rounded-lg relative overflow-hidden transition-all duration-300 hover:-translate-x-1 hover:-translate-y-1"
+            style={{
+              background: theme === 'dark' ? '#1a1a1a' : '#ffffff',
+              border: `4px solid ${theme === 'dark' ? '#FFF8E7' : '#0D0D0D'}`,
+              boxShadow: `8px 8px 0 ${exp.color}`,
+              transform: `rotate(${rotations[index]})`
+            }}
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
+            {/* Colored accent bar on left */}
             <div
-              key={index}
-              className={`relative flex flex-col md:flex-row gap-8 mb-0 ${
-                index % 2 === 0 ? 'md:flex-row-reverse' : ''
-              }`}
-            >
-              <div className="absolute z-10 left-1/2 w-8 h-8 transform -translate-x-1/2 overflow-hidden">
-                <div className="w-full h-full bg-gradient-to-tr from-blue-500 to-purple-500 rounded-full flex items-center justify-center shadow-glow-blue">
-                  {index === 0 ? (
-                    <Code className="w-4 h-4 text-white" />
-                  ) : index === 1 ? (
-                    <Building2 className="w-4 h-4 text-white" />
-                  ) : (
-                    <Briefcase className="w-4 h-4 text-white" />
-                  )}
-                </div>
-              </div>
+              className="absolute left-0 top-0 bottom-0 w-2"
+              style={{ background: exp.color }}
+            />
 
-              <div className={`md:w-[52.5%] px-8 mb-8 ${
-                index % 2 === 0 ? 'md:pr-0' : 'md:pl-0'
-              }`}>
-                <div className={`${theme === 'dark' ? 'bg-gray-800/50' : 'bg-white'} rounded-2xl p-6 shadow-xl transition-all duration-300 border ${theme === 'dark' ? 'border-gray-700' : 'border-gray-100'}`}>
-                  <h3 className={`text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'} mb-2`}>
+            {/* Decorative dots */}
+            <div
+              className="absolute top-2.5 right-2.5 w-[30px] h-[30px]"
+              style={{
+                background: `radial-gradient(circle, ${exp.color} 30%, transparent 30%),
+                            radial-gradient(circle, ${exp.color} 30%, transparent 30%)`,
+                backgroundSize: '10px 10px',
+                backgroundPosition: '0 0, 5px 5px'
+              }}
+            />
+
+            {/* Burst Text on Hover */}
+            <span
+              className="absolute top-4 right-16 font-bangers text-3xl transition-all duration-300 pointer-events-none"
+              style={{
+                color: exp.color,
+                textShadow: '2px 2px 0 #0D0D0D',
+                transform: `rotate(15deg) scale(${hoveredIndex === index ? 1.2 : 0})`,
+                opacity: hoveredIndex === index ? 1 : 0
+              }}
+            >
+              {exp.burst}
+            </span>
+
+            <div className="pl-4">
+              {/* Header row */}
+              <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
+                <div>
+                  <h3
+                    className="font-bangers text-3xl mb-1"
+                    style={{ color: theme === 'dark' ? '#FFF8E7' : '#0D0D0D' }}
+                  >
                     {exp.title}
                   </h3>
-                  <div className="text-blue-500 dark:text-blue-400 font-medium mb-2">
+                  <p
+                    className="font-comic font-bold text-xl"
+                    style={{ color: exp.color }}
+                  >
                     {exp.company}
-                  </div>
-                  <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm mb-4">
-                    <span>{exp.location}</span>
-                    <span className="mx-2">•</span>
-                    <span>{exp.period}</span>
-                  </div>
-                  <ul className="space-y-3">
-                    {exp.description.map((item, i) => (
-                      <li 
-                        key={i}
-                        className="flex items-start group"
-                      >
-                        <span className="flex-shrink-0 w-1.5 h-1.5 mt-2 rounded-full bg-blue-500 mr-3 group-hover:scale-125 transition-transform duration-300" />
-                        <span className={`${
-                          theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                        } transition-all duration-300 group-hover:[text-shadow:_0_0_6px_#93c5fd] dark:group-hover:[text-shadow:_0_0_8px_#3b82f6]`}>
-                          {item}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                  </p>
+                </div>
+
+                {/* Period badge */}
+                <div
+                  className="px-4 py-2 font-bangers text-lg text-white rounded"
+                  style={{
+                    background: exp.color,
+                    transform: 'skewX(-5deg)'
+                  }}
+                >
+                  <span style={{ transform: 'skewX(5deg)', display: 'inline-block' }}>
+                    {exp.period}
+                  </span>
                 </div>
               </div>
+
+              {/* Location */}
+              <p
+                className="font-comic text-sm mb-4 flex items-center gap-2"
+                style={{ color: theme === 'dark' ? '#aaa' : '#666' }}
+              >
+                📍 {exp.location}
+              </p>
+
+              {/* Description bullets */}
+              <ul className="space-y-2">
+                {exp.description.map((item, i) => (
+                  <li
+                    key={i}
+                    className="flex items-start gap-3 font-comic"
+                    style={{ color: theme === 'dark' ? '#FFF8E7' : '#0D0D0D' }}
+                  >
+                    <span
+                      className="text-lg mt-0.5"
+                      style={{ color: exp.color }}
+                    >
+                      ⚡
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </section>
   );

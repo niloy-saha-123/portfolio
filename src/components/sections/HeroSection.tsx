@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Github, Linkedin, Facebook, Instagram, Twitter, Download } from 'lucide-react';
-import Image from 'next/image';
 import { useTheme } from '@/context/ThemeContext';
 
 const basePath = process.env.NODE_ENV === 'production' ? '/portfolio2' : '';
@@ -11,52 +10,34 @@ interface SocialLink {
   name: string;
   icon: React.ComponentType<{ size?: number }>;
   url: string;
-  color: string;
 }
 
-
-
-const roles = ["Frontend Developer", "Full Stack Developer", "Data Analyst"];
+const roles = ["Software Developer", "Backend Developer", "Data Analyst"];
 
 const socialLinks: SocialLink[] = [
-  {
-    name: 'GitHub',
-    icon: Github,
-    url: 'https://github.com/niloy-saha-123',
-    color: 'hover:text-gray-700 dark:hover:text-gray-400',
-  },
-  {
-    name: 'LinkedIn',
-    icon: Linkedin,
-    url: 'https://www.linkedin.com/in/niloysaha24/',
-    color: 'hover:text-blue-600 dark:hover:text-blue-400',
-  },
-  {
-    name: 'Facebook',
-    icon: Facebook,
-    url: 'https://www.facebook.com/niloy.24.2004/',
-    color: 'hover:text-blue-700 dark:hover:text-blue-600',
-  },
-  {
-    name: 'Instagram',
-    icon: Instagram,
-    url: 'https://www.instagram.com/__niloy__06/',
-    color: 'hover:text-pink-600 dark:hover:text-pink-500',
-  },
-  {
-    name: 'X',
-    icon: Twitter,
-    url: 'https://x.com/__niloy__06',
-    color: 'hover:text-gray-800 dark:hover:text-sky-400',
-  },
+  { name: 'GitHub', icon: Github, url: 'https://github.com/niloy-saha-123' },
+  { name: 'LinkedIn', icon: Linkedin, url: 'https://www.linkedin.com/in/niloysaha24/' },
+  { name: 'Facebook', icon: Facebook, url: 'https://www.facebook.com/niloy.24.2004/' },
+  { name: 'Instagram', icon: Instagram, url: 'https://www.instagram.com/__niloy__06/' },
+  { name: 'X', icon: Twitter, url: 'https://x.com/__niloy__06' },
 ];
 
 const HeroSection: React.FC = () => {
-  const [currentRole, setCurrentRole] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+  const [currentRole, setCurrentRole] = useState(0);
   const { theme } = useTheme();
-  const heroRef = useRef<HTMLDivElement>(null);
+
+  // Character Speech Bubble State
+  const [speechIndex, setSpeechIndex] = useState(0);
+  const speechPhrases = ["Hello!", "I am Niloy", "Nice to meet you"];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSpeechIndex((prev) => (prev + 1) % speechPhrases.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const role = roles[currentRole];
@@ -81,102 +62,198 @@ const HeroSection: React.FC = () => {
     return () => clearTimeout(timeoutId);
   }, [currentRole, displayText, isDeleting]);
 
-
   return (
     <section
-      ref={heroRef}
-      className={`relative min-h-screen overflow-hidden ${
-        theme === 'dark' ? 'bg-[#0B1121]' : 'bg-gray-50'
-      } flex items-center transition-colors duration-300`}
+      id="home"
+      className="min-h-[90vh] flex items-center relative px-4 sm:px-0"
     >
-      <div className="max-w-7xl mx-auto w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center px-6">
-          <div className="space-y-2">
-            <div className="space-y-1">
-              <h2
-                className={`text-5xl ${
-                  theme === 'dark' ? 'text-blue-500' : 'text-blue-600'
-                } leading-snug transition-colors duration-300`}
-              >
-                Hi, I am
-              </h2>
-              <h1
-                className={`text-8xl font-bold ${
-                  theme === 'dark' ? 'text-white' : 'text-gray-900'
-                } tracking-tight leading-tight transition-colors duration-300`}
-              >
-                Niloy Saha
-              </h1>
-              <div className="h-20 flex items-center">
-                <div className="text-4xl font-medium">
-                  <span
-                    className={`${
-                      theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                    } transition-colors duration-300`}
-                  >
-                    I am a{' '}
-                  </span>
-                  <span
-                    className={`${
-                      theme === 'dark' ? 'text-blue-500' : 'text-blue-600'
-                    } transition-colors duration-300`}
-                  >
-                    {displayText}
-                    <span className="animate-blink">|</span>
-                  </span>
-                </div>
-              </div>
-            </div>
+      <div className="flex flex-col-reverse md:flex-row items-center justify-between w-full gap-8">
+        {/* Left: Text Content */}
+        <div className="relative z-10 flex-1">
+          {/* Intro */}
+          <p
+            className="font-comic text-3xl font-bold mb-2"
+            style={{ color: '#9B5DE5' }}
+          >
+            Hi, I am
+          </p>
 
-            <div className="flex space-x-6 pt-2">
-              {socialLinks.map((social, index) => {
-                const Icon = social.icon;
-                return (
-                  <a
-                    key={index}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'} ${social.color}`}
-                  >
-                    <Icon size={36} />
-                  </a>
-                );
-              })}
-            </div>
+          {/* Name with comic text shadow */}
+          <h1
+            className="font-bangers leading-[0.9] mb-4"
+            style={{
+              fontSize: 'clamp(4rem, 12vw, 8rem)',
+              color: theme === 'dark' ? '#FFF8E7' : '#0D0D0D',
+              textShadow: '4px 4px 0 #FF2D7C, 8px 8px 0 #00D4FF, 12px 12px 0 #9B5DE5',
+              animation: 'heroGlitch 3s infinite'
+            }}
+          >
+            Niloy Saha
+          </h1>
 
-            <div className="pt-6">
-              <a
-                href={`${basePath}/Resume.pdf`}
-                download="Niloy_Saha_Resume.pdf"
-                className={`inline-flex items-center space-x-2 px-5 py-3 ${
-                  theme === 'dark' ? 'bg-blue-500 hover:bg-blue-600' : 'bg-blue-600 hover:bg-blue-700'
-                } text-white rounded-lg transition-colors duration-300`}
-              >
-                <span>Resume</span>
-                <Download size={20} />
-              </a>
+          {/* Typing Animation */}
+          <div className="flex items-center mt-4 min-h-[3rem]">
+            <span
+              className="font-marker text-3xl"
+              style={{
+                background: 'linear-gradient(90deg, #FF2D7C, #9B5DE5, #00D4FF)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                backgroundSize: '200% 100%',
+                animation: 'gradientShift 3s ease infinite'
+              }}
+            >
+              {displayText}
+            </span>
+            <span
+              className="inline-block w-1 h-9 ml-1.5 align-middle"
+              style={{
+                background: '#00D4FF',
+                animation: 'cursorBlink 0.7s infinite',
+                boxShadow: '0 0 10px #00D4FF, 0 0 20px #00D4FF'
+              }}
+            />
+          </div>
+
+          {/* Description */}
+          <p
+            className="font-comic text-xl max-w-[520px] mt-6 leading-relaxed"
+            style={{ color: theme === 'dark' ? '#FFF8E7' : '#0D0D0D' }}
+          >
+            Computer Science & Data Analytics student at Dickinson College,
+            specializing in full-stack and backend development, systems infrastructure,
+            AI/ML, and building production-grade solutions.
+          </p>
+
+          {/* Social Links */}
+          <div className="flex gap-4 mt-8">
+            {socialLinks.map((social, index) => {
+              const Icon = social.icon;
+              return (
+                <a
+                  key={index}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-[50px] h-[50px] rounded-full flex items-center justify-center text-2xl transition-all duration-300 hover:-translate-y-1 hover:rotate-[10deg]"
+                  style={{
+                    border: `3px solid ${theme === 'dark' ? '#FFF8E7' : '#0D0D0D'}`,
+                    background: theme === 'dark' ? 'transparent' : '#FFF8E7',
+                    color: theme === 'dark' ? '#FFF8E7' : '#0D0D0D'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = '#FF2D7C';
+                    e.currentTarget.style.borderColor = '#FF2D7C';
+                    e.currentTarget.style.color = 'white';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = theme === 'dark' ? 'transparent' : '#FFF8E7';
+                    e.currentTarget.style.borderColor = theme === 'dark' ? '#FFF8E7' : '#0D0D0D';
+                    e.currentTarget.style.color = theme === 'dark' ? '#FFF8E7' : '#0D0D0D';
+                  }}
+                  title={social.name}
+                >
+                  <Icon size={24} />
+                </a>
+              );
+            })}
+          </div>
+
+          {/* Resume Button */}
+          <a
+            href={`${basePath}/resume.pdf`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 mt-8 px-8 py-4 font-bangers text-xl text-white transition-all duration-200 hover:-translate-x-[3px] hover:-translate-y-[3px]"
+            style={{
+              background: '#FF2D7C',
+              border: '4px solid #0D0D0D',
+              boxShadow: '6px 6px 0 #0D0D0D'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.boxShadow = '9px 9px 0 #0D0D0D';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = '6px 6px 0 #0D0D0D';
+            }}
+          >
+            <span>📄</span>
+            <span>Download Resume</span>
+          </a>
+        </div>
+
+        {/* Right: Character Animation */}
+        <div className="relative z-10 flex flex-col items-center flex-shrink-0">
+          {/* Comic Speech Bubble */}
+          {/* Character Animation & Speech Bubble */}
+          <div
+            className="relative"
+            style={{
+              animation: 'bubbleFloat 3s ease-in-out infinite'
+            }}
+          >
+            <div
+              className="font-bangers text-4xl tracking-wider px-8 py-4 rounded-3xl relative transition-all duration-300 transform"
+              style={{
+                background: theme === 'dark' ? '#FFF8E7' : '#ffffff',
+                border: `4px solid ${theme === 'dark' ? '#FFF8E7' : '#0D0D0D'}`,
+                boxShadow: `6px 6px 0 #FF2D7C`,
+                color: '#FF2D7C',
+                textShadow: '2px 2px 0 #00D4FF',
+                transform: 'rotate(-3deg)',
+                minWidth: '200px',
+                textAlign: 'center'
+              }}
+            >
+              <span className="animate-fade-in block" key={speechIndex}>
+                {speechPhrases[speechIndex]}
+              </span>
+
+              {/* Bubble tail */}
+              <div
+                className="absolute -bottom-4 left-1/2 -translate-x-1/2"
+                style={{
+                  width: 0,
+                  height: 0,
+                  borderLeft: '16px solid transparent',
+                  borderRight: '16px solid transparent',
+                  borderTop: `16px solid ${theme === 'dark' ? '#FFF8E7' : '#0D0D0D'}`,
+                }}
+              />
+              <div
+                className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 z-10"
+                style={{
+                  width: 0,
+                  height: 0,
+                  borderLeft: '12px solid transparent',
+                  borderRight: '12px solid transparent',
+                  borderTop: `12px solid ${theme === 'dark' ? '#FFF8E7' : '#ffffff'}`,
+                }}
+              />
             </div>
           </div>
 
-          <div className="relative">
-            <div className="relative w-full max-w-[480px] lg:w-[480px] h-[480px] mx-auto">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-blue-500/20 to-purple-500/20" />
-              <div
-                className={`absolute inset-6 rounded-full ${
-                  theme === 'dark' ? 'bg-gray-800' : 'bg-[#f0f4ff]'
-                } shadow-lg overflow-hidden transition-colors duration-300`}
-              >
-                <Image
-                  src={`${basePath}/Images/Subject.png`}
-                  alt="Niloy Saha"
-                  fill
-                  className="object-cover object-top rounded-full p-1"
-                  priority
-                />
-              </div>
-              <div className="absolute inset-6 rounded-full bg-gradient-to-tr from-blue-500/10 to-purple-500/10 mix-blend-overlay" />
-            </div>
+          {/* Character Video */}
+          <div
+            className="relative"
+            style={{
+              width: 'clamp(220px, 30vw, 420px)',
+              height: 'clamp(220px, 30vw, 420px)',
+              filter: 'drop-shadow(6px 8px 12px rgba(0,0,0,0.3))',
+            }}
+          >
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-contain"
+            >
+              <source src={`${basePath}/character.webm`} type="video/webm" />
+              {/* MP4 fallback — white bg won't be transparent but still shows */}
+              <source src={`${basePath}/portfolio_video.mp4`} type="video/mp4" />
+            </video>
           </div>
         </div>
       </div>

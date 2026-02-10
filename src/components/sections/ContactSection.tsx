@@ -1,178 +1,188 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Send } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
-import emailjs from '@emailjs/browser';
+import { Send, CheckCircle } from 'lucide-react';
 
-interface FormData {
-  name: string;
-  email: string;
-  message: string;
-}
-
-const ContactSection = () => {
+const ContactSection: React.FC = () => {
   const { theme } = useTheme();
-  const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    message: '',
-  });
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus('idle');
+    setStatus('sending');
 
     try {
-      // EmailJS configuration
-      const serviceId = 'service_2r8ni7b';
-      const templateId = 'template_ssw1wc8';
-      const publicKey = 'OZ4FY3xynmHsfpSnk';
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY || 'YOUR_ACCESS_KEY',
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          from_name: 'Portfolio Contact Form',
+        }),
+      });
 
-      const templateParams = {
-        name: formData.name,
-        email: formData.email,
-        message: formData.message,
-        // Alternative variable names that might be expected
-        from_name: formData.name,
-        from_email: formData.email,
-        user_message: formData.message,
-      };
-
-      // Initialize EmailJS with public key
-      emailjs.init(publicKey);
-      
-      console.log('Sending email with params:', templateParams);
-      
-      // Send email
-      const result = await emailjs.send(serviceId, templateId, templateParams);
-      
-      console.log('Email sent successfully:', result);
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', message: '' });
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      console.error('Error details:', JSON.stringify(error, null, 2));
-      setSubmitStatus('error');
-    } finally {
-      setIsSubmitting(false);
+      if (res.ok) {
+        setStatus('sent');
+        setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => setStatus('idle'), 5000);
+      } else {
+        setStatus('error');
+        setTimeout(() => setStatus('idle'), 3000);
+      }
+    } catch {
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 3000);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  const inputStyle = {
+    background: theme === 'dark' ? '#1a1a1a' : '#ffffff',
+    color: theme === 'dark' ? '#FFF8E7' : '#0D0D0D',
+    border: `3px solid ${theme === 'dark' ? '#FFF8E7' : '#0D0D0D'}`,
   };
 
   return (
-    <section id="contact" className="py-28 px-6 lg:px-12 bg-[var(--background)] transition-colors duration-300">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <h2 className={`text-4xl md:text-5xl font-bold ${
-            theme === 'dark' ? 'text-white' : 'text-gray-900'
-          } mb-4`}>
-            Get In Touch
+    <section id="contact" className="py-16">
+      <div
+        className="p-8 sm:p-16 rounded-lg relative overflow-hidden"
+        style={{
+          background: 'linear-gradient(135deg, #FF2D7C 0%, #9B5DE5 50%, #00D4FF 100%)',
+          border: `4px solid ${theme === 'dark' ? '#FFF8E7' : '#0D0D0D'}`,
+          boxShadow: '8px 8px 0 rgba(0,0,0,0.3)',
+          transform: 'rotate(0.5deg)'
+        }}
+      >
+        {/* Decorative dots */}
+        <div
+          className="absolute top-2.5 right-2.5 w-[30px] h-[30px]"
+          style={{
+            background: `radial-gradient(circle, #FFE66D 30%, transparent 30%),
+                        radial-gradient(circle, #FFE66D 30%, transparent 30%)`,
+            backgroundSize: '10px 10px',
+            backgroundPosition: '0 0, 5px 5px'
+          }}
+        />
+
+        <div className="text-center mb-10">
+          <h2 className="font-bangers text-5xl mb-4 relative inline-block text-white">
+            Let&apos;s Connect!
+            <span
+              className="absolute bottom-0 left-0 w-full h-2.5 -z-10"
+              style={{
+                background: '#FFE66D',
+                transform: 'skewX(-10deg)'
+              }}
+            />
           </h2>
-          <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
-            Feel free to reach out for collaborations, opportunities, or just a friendly hello!
+
+          <p className="font-comic text-xl max-w-[600px] mx-auto text-white">
+            Got a project idea or just want to chat about tech? Drop me a message!
           </p>
         </div>
 
-        <div className="max-w-2xl mx-auto">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Add hidden spam protection field */}
-            <input type="text" name="_gotcha" className="hidden" />
-
+        {/* Contact Form */}
+        <form
+          onSubmit={handleSubmit}
+          className="max-w-[600px] mx-auto space-y-4"
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="name" className={`block text-sm font-medium ${
-                theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-              } mb-2`}>
-                Name
-              </label>
               <input
                 type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                className={`w-full px-4 py-3 ${
-                  theme === 'dark' 
-                    ? 'bg-gray-800/50 border-gray-700 text-gray-300' 
-                    : 'bg-white border-gray-100 text-gray-700'
-                } rounded-2xl border focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 placeholder-gray-400`}
-                placeholder="Your name"
+                placeholder="Your Name"
                 required
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                className="w-full px-4 py-3 rounded-lg font-comic text-base outline-none transition-all duration-200 focus:translate-x-[-2px] focus:translate-y-[-2px]"
+                style={{
+                  ...inputStyle,
+                  boxShadow: '4px 4px 0 rgba(0,0,0,0.2)',
+                }}
               />
             </div>
-
             <div>
-              <label htmlFor="email" className={`block text-sm font-medium ${
-                theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-              } mb-2`}>
-                Email
-              </label>
               <input
                 type="email"
-                id="email"
-                name="email"
+                placeholder="Your Email"
+                required
                 value={formData.email}
-                onChange={handleChange}
-                className={`w-full px-4 py-3 ${
-                  theme === 'dark' 
-                    ? 'bg-gray-800/50 border-gray-700 text-gray-300' 
-                    : 'bg-white border-gray-100 text-gray-700'
-                } rounded-2xl border focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 placeholder-gray-400`}
-                placeholder="your@email.com"
-                required
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                className="w-full px-4 py-3 rounded-lg font-comic text-base outline-none transition-all duration-200 focus:translate-x-[-2px] focus:translate-y-[-2px]"
+                style={{
+                  ...inputStyle,
+                  boxShadow: '4px 4px 0 rgba(0,0,0,0.2)',
+                }}
               />
             </div>
+          </div>
 
-            <div>
-              <label htmlFor="message" className={`block text-sm font-medium ${
-                theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-              } mb-2`}>
-                Message
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                rows={5}
-                className={`w-full px-4 py-3 ${
-                  theme === 'dark' 
-                    ? 'bg-gray-800/50 border-gray-700 text-gray-300' 
-                    : 'bg-white border-gray-100 text-gray-700'
-                } rounded-2xl border focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 placeholder-gray-400`}
-                placeholder="Your message"
-                required
-              />
-            </div>
+          <div>
+            <textarea
+              placeholder="Your Message"
+              required
+              rows={5}
+              value={formData.message}
+              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+              className="w-full px-4 py-3 rounded-lg font-comic text-base outline-none resize-none transition-all duration-200 focus:translate-x-[-2px] focus:translate-y-[-2px]"
+              style={{
+                ...inputStyle,
+                boxShadow: '4px 4px 0 rgba(0,0,0,0.2)',
+              }}
+            />
+          </div>
 
+          <div className="text-center">
             <button
               type="submit"
-              disabled={isSubmitting}
-              className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-blue-500 text-white rounded-2xl hover:bg-blue-600 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={status === 'sending' || status === 'sent'}
+              className="inline-flex items-center gap-3 font-bangers text-2xl text-white px-8 py-4 transition-all duration-200 hover:-translate-x-[3px] hover:-translate-y-[3px] hover:rotate-[-2deg] disabled:opacity-70 disabled:cursor-not-allowed"
+              style={{
+                background: '#0D0D0D',
+                border: '4px solid white',
+                boxShadow: '6px 6px 0 rgba(0,0,0,0.3)',
+              }}
+              onMouseEnter={(e) => {
+                if (status !== 'sending' && status !== 'sent') {
+                  e.currentTarget.style.boxShadow = '9px 9px 0 rgba(0,0,0,0.3)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = '6px 6px 0 rgba(0,0,0,0.3)';
+              }}
             >
-              <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
-              <Send className="w-5 h-5" />
+              {status === 'idle' && (
+                <>
+                  <Send size={22} />
+                  Send Message
+                </>
+              )}
+              {status === 'sending' && 'Sending...'}
+              {status === 'sent' && (
+                <>
+                  <CheckCircle size={22} />
+                  Sent!
+                </>
+              )}
+              {status === 'error' && 'Error — Try Again'}
             </button>
+          </div>
+        </form>
 
-            {submitStatus === 'success' && (
-              <p className="text-green-500 text-sm text-center mt-4">Message sent successfully!</p>
-            )}
-            {submitStatus === 'error' && (
-              <p className="text-red-500 text-sm text-center mt-4">Failed to send message. Please try again.</p>
-            )}
-          </form>
-        </div>
+        {/* Email fallback */}
+        <p className="text-center mt-6 font-comic text-white/80 text-sm">
+          Or email me directly at{' '}
+          <a
+            href="mailto:sahan@dickinson.edu"
+            className="underline text-white hover:text-yellow-200 transition-colors"
+          >
+            sahan@dickinson.edu
+          </a>
+        </p>
       </div>
     </section>
   );

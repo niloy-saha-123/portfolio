@@ -1,197 +1,208 @@
 'use client';
 
-import React from 'react';
-import { ExternalLink, Github, Bot, Brain, ShoppingCart, Monitor } from 'lucide-react';
+import React, { useState } from 'react';
+import { ExternalLink, Github } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 
-const projects = [
+interface Project {
+  title: string;
+  subtitle: string;
+  description: string;
+  technologies: string[];
+  github?: string;
+  link?: string;
+  burstText: string;
+  burstColor: string;
+}
+
+const projects: Project[] = [
   {
-    title: "Rental - Full-Stack Peer-to-Peer Rental Marketplace",
-    period: "June 2025 – Present",
-    description: [
-      "Architecting and developing a full-stack, type-safe web application for a peer-to-peer equipment rental marketplace, deployed on Vercel.",
-      "Designing a scalable relational database schema with Prisma ORM and managing migrations for a PostgreSQL database hosted on Supabase.",
-      "Implementing a secure and robust authentication system using Auth.js (NextAuth.js), enabling both credential-based and OAuth social logins.",
-      "Building an end-to-end type-safe API layer using tRPC, ensuring seamless and error-free data communication between the frontend and server.",
-      "Developing a modular frontend with React and Next.js App Router, creating reusable and feature-specific components with Tailwind CSS for styling.",
-      "Collaborating within a team environment using a professional Git feature-branch workflow, conducting code reviews through pull requests to maintain code quality."
-    ],
-    technologies: ["Next.js", "React", "TypeScript", "tRPC", "PostgreSQL", "Prisma", "Supabase", "Auth.js", "Tailwind CSS"],
-    github: "https://github.com/niloy-saha-123/Rental",
-    icon: ShoppingCart,
-    color: { light: '#10b981', dark: '#34d399' }
+    title: 'TripSmith',
+    subtitle: 'AI Group Travel Planning Platform',
+    description: 'Real-time agentic group travel planner with AI-powered itinerary generation based on budget and preferences. Concurrency-safe FastAPI with Supabase auth/state, integrating a Dedalus MCP agent.',
+    technologies: ['FastAPI', 'Python', 'PostgreSQL', 'Supabase', 'Dedalus MCP'],
+    github: 'https://github.com/HackPrinceton2025/TravelProject',
+    link: 'https://travel-project-dun-seven.vercel.app/',
+    burstText: 'POW!',
+    burstColor: '#FFE66D'
   },
   {
-    title: "WatchNext - Full-Stack Media Tracker",
-    period: "Aug. 2025 – Present",
-    description: [
-      "Designing and building a decoupled, full-stack web application to track watched movies and TV shows.",
-      "Architecting a secure REST API with Node.js and Express for user authentication, data management, and integration with the TMDB API.",
-      "Implementing JWT-based authentication for secure user sessions and data access control.",
-      "Creating a responsive frontend with React and Tailwind CSS for optimal user experience across devices.",
-      "Integrating with The Movie Database (TMDB) API to provide comprehensive movie and TV show information and metadata."
-    ],
-    technologies: ["React", "Node.js", "Express.js", "MongoDB", "Tailwind CSS", "JWT"],
-    github: "https://github.com/niloy-saha-123/WatchNext",
-    icon: Monitor,
-    color: { light: '#f59e0b', dark: '#fbbf24' }
+    title: 'Veritas',
+    subtitle: 'AI-Powered Codebase Review & Doc Verification',
+    description: 'Documentation verification system that flags code-doc mismatches on PRs using embeddings and LLM analysis. Token-efficient prompt engineering reduces API cost by ~88%.',
+    technologies: ['FastAPI', 'Python', 'React', 'Google Gemini', 'Sentence Transformers'],
+    github: 'https://github.com/niloy-saha-123/veritas',
+    link: 'https://veritas-alpha.vercel.app/',
+    burstText: 'ZAP!',
+    burstColor: '#00D4FF'
   },
   {
-    title: "StudyBuddy - AI-Powered Learning Platform",
-    period: "Dec. 2023 – Present",
-    description: [
-      "Designed and launched an AI-powered learning platform that transforms lecture content into structured study materials, integrating live transcription, interactive note-taking, and dynamic demo questions, providing value to 50+ active users.",
-      "Engineered a responsive UI with Next.js and TypeScript, implementing real-time AI transcription and summarization, achieving a 98% accuracy rate and enhancing study efficiency for users."
-    ],
-    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "AI APIs", "React", "Clerk"],
-    link: "https://studybuddy-e7ys.onrender.com/",
-    github: "https://github.com/niloy-saha-123/StudyBuddy",
-    icon: Bot,
-    color: { light: '#3b82f6', dark: '#60a5fa' }
+    title: 'FyndMate',
+    subtitle: 'Developer Matching App',
+    description: 'Supabase + Fastify backend mobile app handling matching, authentication, chat system and fast feed generation. Redis caching, rate limiting, and privacy-safe location handling.',
+    technologies: ['Fastify', 'Node.js', 'TypeScript', 'React Native', 'Expo', 'Supabase', 'Redis', 'PostgreSQL'],
+    github: 'https://github.com/niloy-saha-123/FyndMate',
+    burstText: 'BAM!',
+    burstColor: '#FF2D7C'
   },
   {
-    title: "Automated Sentiment Analysis",
-    period: "Nov. 2023 – Dec. 2023",
-    description: [
-      "Developed a machine learning-based sentiment analysis system using Python for processing movie reviews.",
-      "Achieved 82% accuracy on a dataset of 5000+ reviews, with 95% precision for strongly positive/negative sentiments."
-    ],
-    technologies: ["Python", "Data Processing", "Machine Learning"],
-    icon: Brain,
-    color: { light: '#8b5cf6', dark: '#a78bfa' }
+    title: 'Rental',
+    subtitle: 'Full-Stack Peer-to-Peer Rental Marketplace',
+    description: 'Architecting a type-safe web application for equipment rental marketplace with Next.js, tRPC, Prisma, and PostgreSQL. Features secure authentication and real-time updates.',
+    technologies: ['Next.js', 'React', 'TypeScript', 'tRPC', 'PostgreSQL', 'Prisma'],
+    github: 'https://github.com/niloy-saha-123/Rental',
+    burstText: 'WHAM!',
+    burstColor: '#9B5DE5'
+  },
+  {
+    title: 'WatchNext',
+    subtitle: 'Full-Stack Media Tracker',
+    description: 'Decoupled full-stack application for tracking watched movies and TV shows. Integrates TMDB API for comprehensive media metadata.',
+    technologies: ['React', 'Node.js', 'Express.js', 'MongoDB', 'JWT'],
+    github: 'https://github.com/niloy-saha-123/WatchNext',
+    burstText: 'BOOM!',
+    burstColor: '#FFE66D'
+  },
+  {
+    title: 'StudyBuddy',
+    subtitle: 'AI-Powered Learning Platform',
+    description: 'AI platform transforming lecture content into structured study materials. Features live transcription and 98% accuracy rate. 50+ active users.',
+    technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'AI APIs', 'Clerk'],
+    github: 'https://github.com/niloy-saha-123/StudyBuddy',
+    link: 'https://studybuddy-e7ys.onrender.com/',
+    burstText: 'KAPOW!',
+    burstColor: '#00D4FF'
   }
 ];
 
 const ProjectsSection: React.FC = () => {
   const { theme } = useTheme();
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <section id="projects" className={`py-24 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <h2
-          className={`text-4xl md:text-5xl font-bold ${
-            theme === 'dark' ? 'text-white' : 'text-gray-900'
-          } mb-16 text-center`}
-        >
-          Featured Projects
-        </h2>
+    <section id="projects" className="py-16">
+      <h2
+        className="font-bangers text-5xl mb-8 relative inline-block"
+        style={{ color: theme === 'dark' ? '#FFF8E7' : '#0D0D0D' }}
+      >
+        Projects
+        <span
+          className="absolute bottom-0 left-0 w-full h-2.5 -z-10"
+          style={{
+            background: '#00D4FF',
+            transform: 'skewX(-10deg)'
+          }}
+        />
+      </h2>
 
-        <div className="space-y-8">
-          {projects.map((project, index) => (
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {projects.map((project, index) => (
+          <div
+            key={index}
+            className="p-4 sm:p-8 rounded-lg relative overflow-hidden transition-all duration-300 hover:-translate-x-1 hover:-translate-y-1"
+            style={{
+              background: theme === 'dark' ? '#1a1a1a' : '#ffffff',
+              border: `4px solid ${theme === 'dark' ? '#FFF8E7' : '#0D0D0D'}`,
+              boxShadow: theme === 'dark' ? '8px 8px 0 #FF2D7C' : '8px 8px 0 #0D0D0D'
+            }}
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
+            {/* Decorative dots */}
             <div
-              key={index}
-              className={`group relative ${
-                theme === 'dark' 
-                  ? 'bg-gray-800 border-gray-700 hover:shadow-[0_4px_24px_rgba(255,255,255,0.1)]' 
-                  : 'bg-white border-gray-200 hover:shadow-lg'
-              } rounded-xl p-8 transition-all duration-300 border`}
+              className="absolute top-2.5 right-2.5 w-[30px] h-[30px]"
+              style={{
+                background: `radial-gradient(circle, #FF2D7C 30%, transparent 30%),
+                            radial-gradient(circle, #FF2D7C 30%, transparent 30%)`,
+                backgroundSize: '10px 10px',
+                backgroundPosition: '0 0, 5px 5px'
+              }}
+            />
+
+            {/* Burst Text on Hover */}
+            <span
+              className="absolute -top-5 -right-5 font-bangers text-2xl transition-all duration-300 pointer-events-none"
+              style={{
+                color: project.burstColor,
+                textShadow: '2px 2px 0 #0D0D0D',
+                transform: `rotate(15deg) scale(${hoveredIndex === index ? 1.2 : 0})`,
+                opacity: hoveredIndex === index ? 1 : 0
+              }}
             >
-              {/* Gradient overlay */}
-              <div 
-                className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                style={{
-                  background: `linear-gradient(135deg, ${
-                    theme === 'dark' ? project.color.dark : project.color.light
-                  }08 0%, transparent 100%)`
-                }}
-              />
+              {project.burstText}
+            </span>
 
-              <div className="relative space-y-6">
-                {/* Header */}
-                <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                  <div className="flex items-start gap-5">
-                    <div 
-                      className="p-3 rounded-lg shrink-0"
-                      style={{
-                        backgroundColor: theme === 'dark' 
-                          ? `${project.color.dark}20`
-                          : `${project.color.light}10`
-                      }}
-                    >
-                      <project.icon 
-                        className="w-6 h-6"
-                        style={{
-                          color: theme === 'dark' ? project.color.dark : project.color.light
-                        }}
-                      />
-                    </div>
-                    <div>
-                      <h3 className={`text-2xl font-semibold ${
-                        theme === 'dark' ? 'text-white' : 'text-gray-900'
-                      }`}>
-                        {project.title}
-                      </h3>
-                      <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'} mt-2`}>
-                        {project.period}
-                      </p>
-                    </div>
-                  </div>
 
-                  {/* Links */}
-                  <div className="flex items-center gap-3 md:mt-0">
-                    {project.github && (
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`p-2 rounded-lg ${
-                          theme === 'dark' 
-                          ? 'hover:bg-gray-700/50' 
-                          : 'hover:bg-gray-100'
-                        } transition-colors`}
-                      >
-                        <Github className={`w-6 h-6 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`} />
-                      </a>
-                    )}
-                    {project.link && (
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`p-2 rounded-lg ${
-                          theme === 'dark' 
-                          ? 'hover:bg-gray-700/50' 
-                          : 'hover:bg-gray-100'
-                        } transition-colors`}
-                      >
-                        <ExternalLink className={`w-6 h-6 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`} />
-                      </a>
-                    )}
-                  </div>
-                </div>
 
-                {/* Description */}
-                <div className={`space-y-4 text-lg leading-relaxed ${
-                  theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
-                }`}>
-                  {project.description.map((desc, i) => (
-                    <p key={i} className="relative z-10">
-                      {desc}
-                    </p>
-                  ))}
-                </div>
+            {/* Project Title */}
+            <h3
+              className="font-bangers text-3xl mb-1"
+              style={{ color: theme === 'dark' ? '#FFF8E7' : '#0D0D0D' }}
+            >
+              {project.title}
+            </h3>
 
-                {/* Technologies */}
-                <div className="flex flex-wrap gap-3 mt-6">
-                  {project.technologies.map((tech, i) => (
-                    <span
-                      key={i}
-                      className="px-3 py-1.5 text-sm font-medium rounded-full"
-                      style={{
-                        backgroundColor: theme === 'dark' 
-                          ? `${project.color.dark}20`
-                          : `${project.color.light}10`,
-                        color: theme === 'dark' ? project.color.dark : project.color.light
-                      }}
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
+            {/* Subtitle */}
+            <p
+              className="font-comic font-bold mb-4"
+              style={{ color: '#FF2D7C' }}
+            >
+              {project.subtitle}
+            </p>
+
+            {/* Description */}
+            <p
+              className="font-comic leading-relaxed mb-4"
+              style={{ color: theme === 'dark' ? '#FFF8E7' : '#0D0D0D' }}
+            >
+              {project.description}
+            </p>
+
+            {/* Technologies */}
+            <div className="flex flex-wrap gap-2 mb-4">
+              {project.technologies.map((tech, techIndex) => (
+                <span
+                  key={techIndex}
+                  className="px-3 py-1 text-sm rounded"
+                  style={{
+                    background: theme === 'dark' ? '#FFF8E7' : '#0D0D0D',
+                    color: theme === 'dark' ? '#0D0D0D' : '#ffffff'
+                  }}
+                >
+                  {tech}
+                </span>
+              ))}
             </div>
-          ))}
-        </div>
+
+            {/* Links */}
+            <div className="flex gap-4">
+              {project.github && (
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 font-bold transition-transform duration-200 hover:translate-x-1"
+                  style={{ color: '#FF2D7C' }}
+                >
+                  <Github size={16} />
+                  View Code
+                </a>
+              )}
+              {project.link && (
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 font-bold transition-transform duration-200 hover:translate-x-1"
+                  style={{ color: '#FF2D7C' }}
+                >
+                  <ExternalLink size={16} />
+                  Live
+                </a>
+              )}
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

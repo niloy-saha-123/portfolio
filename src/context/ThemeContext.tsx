@@ -1,4 +1,3 @@
-// ThemeContext.tsx
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
@@ -21,9 +20,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       const savedTheme = localStorage.getItem('theme') as Theme;
       const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       const initialTheme = savedTheme || systemTheme;
-      
+
       setTheme(initialTheme);
       document.documentElement.classList.toggle('dark', initialTheme === 'dark');
+      document.body.classList.toggle('dark', initialTheme === 'dark');
       setMounted(true);
     } catch (error) {
       console.error('Failed to load theme:', error);
@@ -39,9 +39,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         const newTheme = e.matches ? 'dark' : 'light';
         setTheme(newTheme);
         document.documentElement.classList.toggle('dark', newTheme === 'dark');
+        document.body.classList.toggle('dark', newTheme === 'dark');
       }
     };
-    
+
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
@@ -51,6 +52,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
     document.documentElement.classList.toggle('dark', newTheme === 'dark');
+    document.body.classList.toggle('dark', newTheme === 'dark');
   };
 
   if (!mounted) {

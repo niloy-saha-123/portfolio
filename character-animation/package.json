@@ -1,0 +1,27 @@
+{
+  "name": "character-animation",
+  "version": "1.0.0",
+  "description": "Remotion character animations for portfolio",
+  "main": "index.js",
+  "scripts": {
+    "start": "remotion studio",
+    "build": "remotion bundle",
+    "render-all": "npm run render-idle && npm run render-running && npm run render-waving && npm run render-jumping",
+    "render-idle": "remotion render IdleAnimation out/idle.webm --codec=vp9",
+    "render-running": "remotion render RunningAnimation out/running.webm --codec=vp9",
+    "render-waving": "remotion render WavingAnimation out/waving.webm --codec=vp9",
+    "render-jumping": "remotion render JumpingAnimation out/jumping.webm --codec=vp9"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@remotion/cli": "^4.0.0",
+    "@remotion/renderer": "^4.0.0",
+    "remotion": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.10",
+    "typescript": "^5.9.3"
+  }
+}
