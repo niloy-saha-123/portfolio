@@ -4,8 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { Github, Linkedin, Facebook, Instagram, Twitter } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 
-const basePath = process.env.NODE_ENV === 'production' ? '/portfolio2' : '';
-
 interface SocialLink {
   name: string;
   icon: React.ComponentType<{ size?: number }>;
@@ -161,7 +159,7 @@ const HeroSection: React.FC = () => {
 
           {/* Resume Button */}
           <a
-            href={`${basePath}/resume.pdf`}
+            href="/resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 mt-8 px-8 py-4 font-bangers text-xl text-white transition-all duration-200 hover:-translate-x-[3px] hover:-translate-y-[3px]"
@@ -249,9 +247,9 @@ const HeroSection: React.FC = () => {
               playsInline
               className="w-full h-full object-contain"
             >
-              <source src={`${basePath}/character.webm`} type="video/webm" />
+              <source src="/character.webm" type="video/webm" />
               {/* MP4 fallback — white bg won't be transparent but still shows */}
-              <source src={`${basePath}/portfolio_video.mp4`} type="video/mp4" />
+              <source src="/portfolio_video.mp4" type="video/mp4" />
             </video>
           </div>
         </div>

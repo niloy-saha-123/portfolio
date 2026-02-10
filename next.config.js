@@ -8,8 +8,8 @@ const nextConfig = {
       hostname: '**'
     }]
   },
-  basePath: process.env.NODE_ENV === 'production' ? '/portfolio2' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/portfolio2' : '',
+  basePath: '',
+  assetPrefix: '',
   trailingSlash: true,
  }
  
