@@ -66,7 +66,7 @@ const HeroSection: React.FC = () => {
     >
       <div className="flex flex-col-reverse md:flex-row items-center justify-between w-full gap-8">
         {/* Left: Text Content */}
-        <div className="relative z-10 flex-1">
+        <div className="relative z-10 flex-1 md:pl-12 lg:pl-20">
           {/* Intro */}
           <p
             className="font-comic text-3xl font-bold mb-2"
