@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Github, Linkedin, Facebook, Instagram, Twitter, Download } from 'lucide-react';
+import { Github, Linkedin, Facebook, Instagram, Twitter } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 
 const basePath = process.env.NODE_ENV === 'production' ? '/portfolio2' : '';
@@ -13,6 +13,7 @@ interface SocialLink {
 }
 
 const roles = ["Software Developer", "Backend Developer", "Data Analyst"];
+const speechPhrases = ["Hello!", "I am Niloy", "Nice to meet you"];
 
 const socialLinks: SocialLink[] = [
   { name: 'GitHub', icon: Github, url: 'https://github.com/niloy-saha-123' },
@@ -30,8 +31,6 @@ const HeroSection: React.FC = () => {
 
   // Character Speech Bubble State
   const [speechIndex, setSpeechIndex] = useState(0);
-  const speechPhrases = ["Hello!", "I am Niloy", "Nice to meet you"];
-
   useEffect(() => {
     const interval = setInterval(() => {
       setSpeechIndex((prev) => (prev + 1) % speechPhrases.length);
