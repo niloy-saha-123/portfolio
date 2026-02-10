@@ -38,7 +38,7 @@ export default function RootLayout({
         <ThemeProvider>
           <ClientCursor />
           <Header />
-          <main className="pt-[80px] sm:pt-[100px] max-w-[1200px] mx-auto px-4 sm:px-8">
+          <main className="pt-[80px] sm:pt-[100px] max-w-[1200px] xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-8">
             {children}
           </main>
           <footer className="text-center py-12 font-comic">
