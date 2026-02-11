@@ -15,27 +15,27 @@ interface Experience {
 
 const experiences: Experience[] = [
   {
-    title: "Software Engineer Intern",
-    company: "FarmData2",
+    title: "Web Development Intern",
+    company: "FarmData2 (Open Source)",
     location: "Carlisle, PA",
     period: "May 2025 – Jul. 2025",
     description: [
-      "Developed and refactored 10+ core UI components using Vue.js and BootstrapVueNext",
-      "Engineered multi-pass logging system automating 3+ new farm logs per submission",
-      "Authored 15+ Cypress test files achieving 75%+ test coverage",
-      "Implemented Git pre-commit hooks enforcing linting rules"
+      "Engineered a new \"Passes\" feature across backend logic and Vue.js components, collaborating with maintainers and end users to reduce data entry time by 15% for over 5,000 active farmers.",
+      "Built modular, reusable Vue.js components and a scalable navigation hub improving usability across mobile and desktop clients.",
+      "Enhanced reliability by creating a Docker-based CI/CD pipeline with automated testing, enabling faster iteration and production deployments."
     ],
     color: '#FF2D7C',
     burst: 'POW!'
   },
   {
     title: "Software Development Intern",
-    company: "DISA (Development Initiative for Social Awareness)",
+    company: "Development Initiative for Social Awareness (DISA)",
     location: "Dhaka, Bangladesh",
     period: "Jul. 2024 – Aug. 2024",
     description: [
-      "Built microfinance management system with Bootstrap and JavaScript for 500+ users",
-      "Optimized MySQL queries improving efficiency by 40% and cutting retrieval time by 25%"
+      "Designed REST APIs and implemented Java/Spring Boot backend services for a web platform serving 50,000+ accounts, developing transactional workflows with precise calculation logic and data validation.",
+      "Optimized database performance by indexing high-traffic MySQL tables and restructuring queries, reducing latency from 1.8s to 0.35s and improving user experience under heavy load.",
+      "Collaborated with cross-functional teams in an agile environment to ship features, validate requirements, and refine user-facing functionality."
     ],
     color: '#00D4FF',
     burst: 'ZAP!'
@@ -46,8 +46,8 @@ const experiences: Experience[] = [
     location: "Carlisle, PA",
     period: "Nov. 2023 – Mar. 2024",
     description: [
-      "Engineered ML-driven pipeline modernizing 10,000+ line legacy C Basic codebase",
-      "Translated 30% of legacy codebase into Java and Python, improving maintainability"
+      "Built an NLP pipeline translating legacy C Basic code into Python/Java, successfully updating 30% of the codebase.",
+      "Added unit tests and documented edge cases to strengthen correctness and long-term maintainability."
     ],
     color: '#9B5DE5',
     burst: 'BAM!'
